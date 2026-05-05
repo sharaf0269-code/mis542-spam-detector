@@ -19,15 +19,29 @@ jobs:
           APP_URL: https://team8-mis542-252-spam-detector.streamlit.app/
         run: |
           echo "Pinging $APP_URL at $(date -u +'%Y-%m-%d %H:%M UTC')"
-          # -L follow redirects, -s silent, --max-time 60s, accept any 2xx/3xx
-          HTTP_STATUS=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 60 "$APP_URL")
-          echo "Returned HTTP $HTTP_STATUS"
-          # Streamlit Cloud returns 200 even for sleeping apps (with wake button),
-          # so any 2xx/3xx counts as a successful keep-alive ping.
-          if [[ "$HTTP_STATUS" =~ ^[23] ]]; then
-            echo "✓ Keep-alive ping successful"
+          # Streamlit Cloud routes through a CDN that bounces redirects.
+          # Send the request like a real browser, cap redirects to 5,
+          # and don't fail the workflow on non-2xx — any HTTP response
+          # from the edge already counts as activity.
+          set +e
+          HTTP_STATUS=$(curl -L \
+            --max-redirs 5 \
+            --max-time 60 \
+            -s -o /dev/null \
+            -A "Mozilla/5.0 (compatible; GitHubActions-KeepAlive/1.0)" \
+            -w "%{http_code}" \
+            "$APP_URL")
+          CURL_EXIT=$?
+          set -e
+          echo "curl exit code: $CURL_EXIT"
+          echo "HTTP status:    $HTTP_STATUS"
+          # Treat any HTTP response (even 3xx/4xx) as a successful ping.
+          # The workflow only fails if curl couldn't reach the server at all
+          # AND no status was returned.
+          if [ -n "$HTTP_STATUS" ] && [ "$HTTP_STATUS" != "000" ]; then
+            echo "✓ Keep-alive ping successful — server is reachable."
             exit 0
           else
-            echo "✗ Unexpected status code"
+            echo "✗ Could not reach server."
             exit 1
           fi
