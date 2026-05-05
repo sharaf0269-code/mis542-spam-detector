@@ -47,6 +47,65 @@ st.set_page_config(
     layout="centered",
 )
 
+# -----------------------------------------------------------------------------
+# Mobile + desktop responsive CSS
+# -----------------------------------------------------------------------------
+st.markdown(
+    """
+<style>
+/* ===== Desktop (default) — comfortable max width =================== */
+.block-container { max-width: 900px; padding-top: 2rem; padding-bottom: 2rem; }
+
+/* ===== Tablet / small laptop ======================================= */
+@media (max-width: 900px) {
+    .block-container { padding-left: 1.2rem; padding-right: 1.2rem; }
+}
+
+/* ===== Mobile (phones) ============================================= */
+@media (max-width: 640px) {
+    /* Tighter outer padding so content uses full screen width */
+    .block-container { padding: 1rem 0.7rem !important; }
+
+    /* Headings — scale down */
+    h1 { font-size: 1.45rem !important; line-height: 1.25 !important; }
+    h2 { font-size: 1.20rem !important; }
+    h3 { font-size: 1.00rem !important; }
+
+    /* Metric cards — keep 4-in-a-row but shrink so they fit */
+    [data-testid="stMetricLabel"] {
+        font-size: 0.65rem !important; line-height: 1.1 !important;
+    }
+    [data-testid="stMetricValue"], [data-testid="stMetricValue"] > div {
+        font-size: 0.95rem !important; line-height: 1.1 !important;
+    }
+    /* Reduce gutter between metric columns so labels don't wrap */
+    [data-testid="column"] { padding: 0 2px !important; }
+
+    /* Buttons — full width and bigger touch targets */
+    .stButton > button { font-size: 0.95rem !important; padding: 0.6rem !important; }
+
+    /* Caption smaller */
+    .stCaption, [data-testid="stCaptionContainer"] { font-size: 0.78rem !important; }
+
+    /* Team-8 footer — scale text + tighter padding */
+    .team-footer h3   { font-size: 1.15rem !important; letter-spacing: 1px !important; }
+    .team-footer p    { font-size: 0.92rem !important; line-height: 1.7 !important; }
+    .team-footer      { padding: 14px 6px !important; margin-top: 18px !important; }
+}
+
+/* ===== Very small phones (≤ 380 px) — extra squeeze =============== */
+@media (max-width: 380px) {
+    h1 { font-size: 1.25rem !important; }
+    [data-testid="stMetricLabel"] { font-size: 0.58rem !important; }
+    [data-testid="stMetricValue"], [data-testid="stMetricValue"] > div {
+        font-size: 0.85rem !important;
+    }
+}
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 
 # -----------------------------------------------------------------------------
 # Text preprocessing — identical to the original project script
@@ -287,8 +346,8 @@ st.caption("Built with Streamlit · scikit-learn · imbalanced-learn · NLTK")
 
 st.markdown(
     """
-    <div style="text-align:center; margin-top:30px; padding:20px;
-                border-top:2px solid #1F4E79;">
+    <div class="team-footer" style="text-align:center; margin-top:30px;
+                padding:20px; border-top:2px solid #1F4E79;">
         <h3 style="margin-bottom:14px; letter-spacing:2px;"><b>TEAM 8</b></h3>
         <p style="font-size:16px; line-height:1.9; margin:0;">
             <b>MOHAMMED SHARAF</b><br>
