@@ -103,8 +103,10 @@ def train_pipeline():
     df["clean_message"] = df["message"].apply(clean_text)
     df["label"] = (df["class"] == "spam").astype(int)
 
-    X_text = df["clean_message"].values
-    y = df["label"].values
+    # IMPORTANT: pass X as a plain Python list of strings.
+    # scikit-learn 1.7+ rejects object-dtype numpy arrays in train_test_split.
+    X_text = df["clean_message"].astype(str).tolist()
+    y = df["label"].to_numpy()
 
     X_train_text, X_val_text, y_train, y_val = train_test_split(
         X_text, y, test_size=0.20, random_state=42, stratify=y
