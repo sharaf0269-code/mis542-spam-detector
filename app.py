@@ -274,7 +274,21 @@ with st.expander("🧪 Two ready-made examples (from the project report)"):
     st.code(ex2, language="text")
     st.caption("Copy either example into the box above and click *Classify message*.")
 
-st.caption(
-    "Built with Streamlit · scikit-learn · imbalanced-learn · NLTK   "
-    "Mohammed Sharaf, Mohammed Al-Garni, Abdulaziz Aldekhiel, Rayan Alsurayhi, Ibrahim Abaalkhail"
+st.caption("Built with Streamlit · scikit-learn · imbalanced-learn · NLTK")
+
+st.markdown(
+    """
+    <div style="text-align:center; margin-top:30px; padding:20px;
+                border-top:2px solid #1F4E79;">
+        <h3 style="margin-bottom:14px; letter-spacing:2px;"><b>TEAM 8</b></h3>
+        <p style="font-size:16px; line-height:1.9; margin:0;">
+            <b>MOHAMMED SHARAF</b><br>
+            <b>MOHAMMED AL-GARNI</b><br>
+            <b>ABDULAZIZ ALDEKHIEL</b><br>
+            <b>RAYAN ALSURAYHI</b><br>
+            <b>IBRAHIM ABAALKHAIL</b>
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
