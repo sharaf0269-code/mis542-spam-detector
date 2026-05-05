@@ -183,12 +183,21 @@ st.caption(
     "King Fahd University of Petroleum & Minerals  |  Semester 252"
 )
 
-# Top metrics row — instructor sees model + accuracy at a glance
+# Detection model header — full name, no truncation
+n_val = pipeline["n_total"] - int(pipeline["n_total"] * 0.80)
+st.markdown(f"### 🤖 Detection model: **{pipeline['best_name']}**")
+st.caption(
+    f"Performance below measured on the **validation set** — "
+    f"{n_val:,} unseen messages from the project dataset "
+    f"({pipeline['n_total']:,} total, 80/20 stratified split, after SMOTE balancing)."
+)
+
+# Top metrics row — instructor sees the 4 core numbers at a glance
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Model in use",   pipeline["best_name"])
-c2.metric("Accuracy",       f"{best['accuracy']*100:.2f}%")
-c3.metric("Precision (spam)", f"{best['precision']*100:.2f}%")
-c4.metric("Recall (spam)",  f"{best['recall']*100:.2f}%")
+c1.metric("Accuracy",         f"{best['accuracy']*100:.2f}%")
+c2.metric("Precision (spam)", f"{best['precision']*100:.2f}%")
+c3.metric("Recall (spam)",    f"{best['recall']*100:.2f}%")
+c4.metric("F1 score (spam)",  f"{best['f1']*100:.2f}%")
 
 st.divider()
 
